@@ -88,6 +88,22 @@ button:focus-visible {
   cursor: not-allowed;
 }
 
+.word-display {
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.letter {
+  display: inline-block;
+  width: 1em; /* adjust based on your design */
+  text-align: center;
+  
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
