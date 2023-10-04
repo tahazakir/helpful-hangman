@@ -60,6 +60,7 @@ button:focus-visible {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+  margin-top: 20px;
 }
 
 .keyboard button {
@@ -102,6 +103,26 @@ button:focus-visible {
   width: 1em; /* adjust based on your design */
   text-align: center;
   
+}
+
+.win-message,
+.loss-message {
+    font-size: 1.5em;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: 100%;
+}
+
+.win-message {
+    background-color: #4CAF50; /* Green */
+    color: white;
+}
+
+.loss-message {
+    background-color: #f44336; /* Red */
+    color: white;
 }
 
 
