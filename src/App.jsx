@@ -69,7 +69,7 @@ function App() {
 
     // Check for loss condition in a similar manner
     setIncorrectGuesses((prevIncorrect) => {
-      if (prevIncorrect.length >= 6) {
+      if (prevIncorrect.length >= 8) {
         setHasLost(true);
       }
       return prevIncorrect;

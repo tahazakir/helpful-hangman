@@ -26,9 +26,12 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  /* flex-direction: column; 
+  align-items: center;  */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  /* padding-top: 4%;  */
 }
 
 h1 {
@@ -38,6 +41,7 @@ h1 {
   width: 100%;
   margin: 0 auto; /* Center it horizontally */
   text-align: center;
+  margin-bottom: 20px;
 }
 
 button {

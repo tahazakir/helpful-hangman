@@ -28,6 +28,14 @@ function HangmanDrawing({ incorrectGuessCount }) {
                     <line x1="150" y1="100" x2="170" y2="120" stroke="white" />
                 </>
             )}
+
+            {/* Legs (Both left and right in a single stage) */}
+            {incorrectGuessCount > 7 && (
+                <>
+                    <line x1="150" y1="130" x2="130" y2="170" stroke="white" />
+                    <line x1="150" y1="130" x2="170" y2="170" stroke="white" />
+                </>
+            )}
         </svg>
     );
 }
