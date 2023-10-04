@@ -45,8 +45,6 @@ const VoiceInputButton = () => {
 
             console.log('SpeechRecognition onresult');
 
-            
-
             // Get guess phrase
             let guessPhrase = event.results[0][0].transcript.toLowerCase().split(' ');
             

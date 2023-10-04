@@ -55,6 +55,40 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.keyboard button {
+  width: 2em;         /* Set a fixed width */
+  height: 2em;        /* Set a fixed height */
+  padding: 10px;
+  font-size: 1em;
+  text-align: center;  /* Ensure letter is centered */
+  cursor: pointer;
+  border: none;
+  background-color: #007BFF;
+  color: #FFF;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+  display: flex;       /* Following three lines ensure content is centered both vertically and horizontally */
+  justify-content: center;
+  align-items: center;
+}
+
+.keyboard button:hover {
+  background-color: #0069D9;
+}
+
+.keyboard button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
@@ -67,3 +101,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
