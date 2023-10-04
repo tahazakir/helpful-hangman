@@ -105,26 +105,43 @@ button:focus-visible {
   
 }
 
-.win-message,
-.loss-message {
-    font-size: 1.5em;
-    margin-top: 20px;
-    padding: 10px;
-    border-radius: 5px;
-    text-align: center;
-    width: 100%;
+.win-message, .loss-message {
+  font-size: 1.5em;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  position: relative;  /* This makes it a container for absolutely positioned children */
+  width: 100%;
 }
 
 .win-message {
-    background-color: #4CAF50; /* Green */
-    color: white;
+  background-color: #4CAF50; /* Green */
+  color: white;
 }
 
 .loss-message {
-    background-color: #f44336; /* Red */
-    color: white;
+  background-color: #f44336; /* Red */
+  color: white;
 }
 
+.reset-button {
+  font-size: 0.7em;
+  padding: 5px 10px;
+  position: absolute;  /* Absolutely position within win/loss messages */
+  bottom: 10px;       /* Positioning from the bottom */
+  right: 10px;        /* Positioning from the right */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #333;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+      background-color: #dddddd;
+  }
+}
 
 @media (prefers-color-scheme: light) {
   :root {

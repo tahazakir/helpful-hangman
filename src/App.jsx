@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
@@ -8,12 +8,37 @@ import WordDisplay from "./WordDisplay";
 import HangmanDrawing from "./HangmanDrawing";
 
 function App() {
+  const speechSynthesisSupported = "speechSynthesis" in window;
+
   const [word, setWord] = useState("hero"); // This can be randomized from a list later
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [incorrectGuesses, setIncorrectGuesses] = useState([]);
 
   const [hasWon, setHasWon] = useState(false);
   const [hasLost, setHasLost] = useState(false);
+
+  const speak = (text) => {
+    if (!speechSynthesisSupported) {
+      console.error("TTS not supported in this browser.");
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US"; // Set the language to English
+
+    // Stop any ongoing speech before starting
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const resetGame = () => {
+    // Set all states to their initial values
+    setWord("hero"); // Or you can randomize this from a list if you wish
+    setGuessedLetters([]);
+    setIncorrectGuesses([]);
+    setHasWon(false);
+    setHasLost(false);
+  };
 
   const handleLetterGuess = (letter) => {
     // Check if the letter has already been guessed (either correctly or incorrectly)
@@ -46,17 +71,36 @@ function App() {
     });
   };
 
+  useEffect(() => {
+    // Generate the current word state
+    const currentWordState = word
+      .split("")
+      .filter((letter) => guessedLetters.includes(letter))
+      .join("");
+
+    // Read out the current word state using the speak function
+    speak(currentWordState);
+  }, [guessedLetters]);
+
   return (
     <div className="App">
       <h1>Helpful Hangman</h1>
 
       {/* Game Status Messages */}
       {hasWon && (
-        <div className="win-message">Congratulations! You've won!</div>
+        <div className="win-message">
+          Congratulations! You've won!
+          <button className="reset-button" onClick={resetGame}>
+            Try Again
+          </button>
+        </div>
       )}
       {hasLost && (
         <div className="loss-message">
           Sorry! You've lost. The word was: {word.toUpperCase()}
+          <button className="reset-button" onClick={resetGame}>
+            Try Again
+          </button>
         </div>
       )}
 
