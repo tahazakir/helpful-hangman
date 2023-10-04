@@ -6,11 +6,16 @@ import VoiceInputButton from "./VoiceInputButton";
 import VirtualKeyboard from "./VirtualKeyboard";
 import WordDisplay from "./WordDisplay";
 import HangmanDrawing from "./HangmanDrawing";
+import { wordList } from "./words";
 
 function App() {
   const speechSynthesisSupported = "speechSynthesis" in window;
 
-  const [word, setWord] = useState("hero"); // This can be randomized from a list later
+  const getRandomWord = (words) => {
+    return words[Math.floor(Math.random() * words.length)];
+  };
+
+  const [wordObj, setWordObj] = useState(getRandomWord(wordList));
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [incorrectGuesses, setIncorrectGuesses] = useState([]);
 
@@ -33,7 +38,7 @@ function App() {
 
   const resetGame = () => {
     // Set all states to their initial values
-    setWord("hero"); // Or you can randomize this from a list if you wish
+    setWordObj(getRandomWord(wordList)); // Or you can randomize this from a list if you wish
     setGuessedLetters([]);
     setIncorrectGuesses([]);
     setHasWon(false);
@@ -47,7 +52,7 @@ function App() {
     }
 
     // If the letter is part of the word, add it to the guessedLetters.
-    if (word.includes(letter)) {
+    if (wordObj.word.includes(letter)) {
       setGuessedLetters((prevLetters) => [...prevLetters, letter]);
     } else {
       // If not, it's an incorrect guess.
@@ -56,7 +61,7 @@ function App() {
 
     // Check for win condition using a callback to ensure we're working with the most recent state
     setGuessedLetters((prevLetters) => {
-      if (word.split("").every((char) => prevLetters.includes(char))) {
+      if (wordObj.word.split("").every((char) => prevLetters.includes(char))) {
         setHasWon(true);
       }
       return prevLetters; // Return the same list without modification
@@ -73,7 +78,7 @@ function App() {
 
   useEffect(() => {
     // Generate the current word state
-    const currentWordState = word
+    const currentWordState = wordObj.word
       .split("")
       .filter((letter) => guessedLetters.includes(letter))
       .join("");
@@ -97,7 +102,7 @@ function App() {
       )}
       {hasLost && (
         <div className="loss-message">
-          Sorry! You've lost. The word was: {word.toUpperCase()}
+          Sorry! You've lost. The word was: {wordObj.word.toUpperCase()}
           <button className="reset-button" onClick={resetGame}>
             Try Again
           </button>
@@ -105,7 +110,8 @@ function App() {
       )}
 
       <HangmanDrawing incorrectGuessCount={incorrectGuesses.length} />
-      <WordDisplay word={word} guessedLetters={guessedLetters} />
+      <WordDisplay word={wordObj.word} guessedLetters={guessedLetters} />
+      <div className="hint">Hint: {wordObj.hint}</div>
       <div className="incorrect-guesses">
         Incorrect Guesses: {incorrectGuesses.join(", ").toUpperCase()}
       </div>
