@@ -109,13 +109,23 @@ function App() {
         </div>
       )}
 
-      <HangmanDrawing incorrectGuessCount={incorrectGuesses.length} />
-      <WordDisplay word={wordObj.word} guessedLetters={guessedLetters} />
-      <div className="hint">Hint: {wordObj.hint}</div>
-      {/* <div className="incorrect-guesses">
-        Incorrect guesses: {incorrectGuesses.join(", ").toUpperCase()}
-      </div> */}
-      <VirtualKeyboard onLetterClick={handleLetterGuess} disabledLettersCorrect={guessedLetters} disabledLettersIncorrect={incorrectGuesses} />
+      <div className="game-container">
+        <div className="left-column">
+          <WordDisplay word={wordObj.word} guessedLetters={guessedLetters} />
+          <div className="hint">Hint: {wordObj.hint}</div>
+          <VirtualKeyboard
+            onLetterClick={handleLetterGuess}
+            disabledLettersCorrect={guessedLetters}
+            disabledLettersIncorrect={incorrectGuesses}
+          />
+        </div>
+
+        <div className="right-column">
+          <div className="drawing-border">
+            <HangmanDrawing incorrectGuessCount={incorrectGuesses.length} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

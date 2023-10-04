@@ -32,8 +32,12 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 3em;
   line-height: 1.1;
+  max-width: 600px; /* Set a fixed max-width; you can adjust this */
+  width: 100%;
+  margin: 0 auto; /* Center it horizontally */
+  text-align: center;
 }
 
 button {
@@ -55,10 +59,12 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+
 .keyboard {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
   margin-bottom: 20px;
   margin-top: 20px;
 }
@@ -112,14 +118,19 @@ button:focus-visible {
   
 }
 
+/* Win/Loss Message Styles */
 .win-message, .loss-message {
-  font-size: 1.5em;
-  margin-top: 20px;
+  font-size: 1.2em; /* Adjusted to make the container smaller */
+  margin: 10px auto; /* Center it horizontally */
   padding: 10px;
   border-radius: 5px;
   text-align: center;
-  position: relative;  /* This makes it a container for absolutely positioned children */
   width: 100%;
+  max-width: 400px; /* Same as the h1 max-width */
+  display: flex; /* Convert the container to flex */
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center the children horizontally */
+  justify-content: center; /* Center the children vertically */
 }
 
 .win-message {
@@ -132,23 +143,51 @@ button:focus-visible {
   color: white;
 }
 
+/* Reset Button Styles */
 .reset-button {
   font-size: 0.7em;
   padding: 5px 10px;
-  position: absolute;  /* Absolutely position within win/loss messages */
-  bottom: 10px;       /* Positioning from the bottom */
-  right: 10px;        /* Positioning from the right */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   background-color: #ffffff;
   color: #333;
   transition: background-color 0.3s ease;
-
-  &:hover {
-      background-color: #dddddd;
-  }
+  margin-top: 20px; /* Add space between the message and the button */
 }
+
+.reset-button:hover {
+  background-color: #dddddd;
+}
+
+.game-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* This ensures components are vertically centered */
+  padding: 20px;
+  gap: 20px;
+}
+
+.left-column, .right-column {
+  flex: 1; /* This ensures both columns take equal width */
+}
+
+.word-hint-container {
+  margin-bottom: 20px; /* Add space between word display and the keyboard */
+}
+
+.right-column {
+  display: flex;
+  justify-content: center; /* This centers the hangman drawing horizontally */
+  align-items: center; /* This centers the hangman drawing vertically */
+}
+
+.drawing-border {
+  border: 3px solid #333; /* Adjust as needed */
+  padding: 20px;
+  border-radius: 10px; /* This rounds the corners of the border */
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {
