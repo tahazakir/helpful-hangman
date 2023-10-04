@@ -8,7 +8,6 @@ export const wordList = [
     { word: "mango", hint: "fruit" },
     { word: "orange", hint: "fruit" },
     { word: "papaya", hint: "fruit" },
-    { word: "quince", hint: "fruit" },
 
     { word: "tiger", hint: "animal" },
     { word: "zebra", hint: "animal" },

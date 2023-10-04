@@ -80,13 +80,20 @@ button:focus-visible {
   align-items: center;
 }
 
-.keyboard button:hover {
+.keyboard button:not(:disabled):hover {
   background-color: #0069D9;
 }
 
 .keyboard button:disabled {
-  background-color: #ccc;
   cursor: not-allowed;
+}
+
+.keyboard button.correct {
+  background-color: #69caa6; /* Greenish */
+}
+
+.keyboard button.incorrect {
+  background-color: #FF8C94; /* Reddish */
 }
 
 .word-display {

@@ -112,10 +112,10 @@ function App() {
       <HangmanDrawing incorrectGuessCount={incorrectGuesses.length} />
       <WordDisplay word={wordObj.word} guessedLetters={guessedLetters} />
       <div className="hint">Hint: {wordObj.hint}</div>
-      <div className="incorrect-guesses">
-        Incorrect Guesses: {incorrectGuesses.join(", ").toUpperCase()}
-      </div>
-      <VirtualKeyboard onLetterClick={handleLetterGuess} />
+      {/* <div className="incorrect-guesses">
+        Incorrect guesses: {incorrectGuesses.join(", ").toUpperCase()}
+      </div> */}
+      <VirtualKeyboard onLetterClick={handleLetterGuess} disabledLettersCorrect={guessedLetters} disabledLettersIncorrect={incorrectGuesses} />
     </div>
   );
 }
