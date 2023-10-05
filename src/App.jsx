@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import VoiceInputButton from "./VoiceInputButton";
 import VirtualKeyboard from "./VirtualKeyboard";
@@ -9,7 +7,54 @@ import HangmanDrawing from "./HangmanDrawing";
 import { wordList } from "./words";
 
 function App() {
+  
   const speechSynthesisSupported = "speechSynthesis" in window;
+
+  // Initial fetch of preferred voice
+  const getPreferredVoice = () => {
+    let voices = window.speechSynthesis.getVoices();
+    const preferredVoicesOrder = [
+      'Google UK English Male',
+      'Daniel (English (United Kingdom))',
+      'Google UK English Female',
+      'Google US English'
+    ];
+
+    for(let preferredVoice of preferredVoicesOrder) {
+      const foundVoice = voices.find(voice => voice.name === preferredVoice);
+      if(foundVoice) {
+        return foundVoice;
+      }
+    }
+
+    return null; // fallback to the default voice
+  }
+
+  const [preferredVoice, setPreferredVoice] = useState(getPreferredVoice());
+
+  // Listening for voicechanged 
+  useEffect(() => {
+    if(!preferredVoice) {
+      const setVoiceWhenAvailable = () => {
+        setPreferredVoice(getPreferredVoice());
+      };
+      window.speechSynthesis.onvoiceschanged = setVoiceWhenAvailable;
+    }
+  }, [preferredVoice]);
+
+  const speak = (text) => {
+    if (!speechSynthesisSupported || !preferredVoice) {
+      return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en"; 
+    utterance.voice = preferredVoice;
+
+    // Stop any ongoing speech before starting
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  };
 
   const getRandomWord = (words) => {
     return words[Math.floor(Math.random() * words.length)];
@@ -22,23 +67,9 @@ function App() {
   const [hasWon, setHasWon] = useState(false);
   const [hasLost, setHasLost] = useState(false);
 
-  const speak = (text) => {
-    if (!speechSynthesisSupported) {
-      console.error("TTS not supported in this browser.");
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-US"; // Set the language to English
-
-    // Stop any ongoing speech before starting
-    window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
-  };
-
   const resetGame = () => {
     // Set all states to their initial values
-    setWordObj(getRandomWord(wordList)); // Or you can randomize this from a list if you wish
+    setWordObj(getRandomWord(wordList)); 
     setGuessedLetters([]);
     setIncorrectGuesses([]);
     setHasWon(false);
@@ -48,7 +79,7 @@ function App() {
   const handleLetterGuess = (letter) => {
     // Check if the letter has already been guessed (either correctly or incorrectly)
     if (guessedLetters.includes(letter) || incorrectGuesses.includes(letter)) {
-      return; // Don't process further if already guessed
+      return; 
     }
 
     // If the letter is part of the word, add it to the guessedLetters.
@@ -59,12 +90,12 @@ function App() {
       setIncorrectGuesses((prevIncorrect) => [...prevIncorrect, letter]);
     }
 
-    // Check for win condition using a callback to ensure we're working with the most recent state
+    // Check for win condition
     setGuessedLetters((prevLetters) => {
       if (wordObj.word.split("").every((char) => prevLetters.includes(char))) {
         setHasWon(true);
       }
-      return prevLetters; // Return the same list without modification
+      return prevLetters; 
     });
 
     // Check for loss condition in a similar manner
