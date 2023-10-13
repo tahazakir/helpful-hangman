@@ -10,31 +10,32 @@ function App() {
   
   const speechSynthesisSupported = "speechSynthesis" in window;
 
-  // Initial fetch of preferred voice
   const getPreferredVoice = () => {
     let voices = window.speechSynthesis.getVoices();
     const preferredVoicesOrder = [
-      'Google UK English Male',
-      'Daniel (English (United Kingdom))',
-      'Google UK English Female',
-      'Google US English'
+      "Google UK English Male",
+      "Daniel (English (United Kingdom))",
+      "Daniel",
+      "Google UK English Female",
+      "Google US English",
     ];
 
-    for(let preferredVoice of preferredVoicesOrder) {
-      const foundVoice = voices.find(voice => voice.name === preferredVoice);
-      if(foundVoice) {
+    for (let preferredVoice of preferredVoicesOrder) {
+      const foundVoice = voices.find((voice) => voice.name === preferredVoice);
+      if (foundVoice) {
         return foundVoice;
       }
     }
 
-    return null; // fallback to the default voice
-  }
+    // If none of the preferred voices are found, use the first available voice.
+    return voices.length > 0 ? voices[0] : null;
+  };
 
   const [preferredVoice, setPreferredVoice] = useState(getPreferredVoice());
 
-  // Listening for voicechanged 
+  // Listening for voicechanged
   useEffect(() => {
-    if(!preferredVoice) {
+    if (!preferredVoice) {
       const setVoiceWhenAvailable = () => {
         setPreferredVoice(getPreferredVoice());
       };
@@ -48,7 +49,7 @@ function App() {
     }
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en"; 
+    utterance.lang = "en";
     utterance.voice = preferredVoice;
 
     // Stop any ongoing speech before starting
@@ -69,7 +70,7 @@ function App() {
 
   const resetGame = () => {
     // Set all states to their initial values
-    setWordObj(getRandomWord(wordList)); 
+    setWordObj(getRandomWord(wordList));
     setGuessedLetters([]);
     setIncorrectGuesses([]);
     setHasWon(false);
@@ -79,7 +80,7 @@ function App() {
   const handleLetterGuess = (letter) => {
     // Check if the letter has already been guessed (either correctly or incorrectly)
     if (guessedLetters.includes(letter) || incorrectGuesses.includes(letter)) {
-      return; 
+      return;
     }
 
     // If the letter is part of the word, add it to the guessedLetters.
@@ -95,7 +96,7 @@ function App() {
       if (wordObj.word.split("").every((char) => prevLetters.includes(char))) {
         setHasWon(true);
       }
-      return prevLetters; 
+      return prevLetters;
     });
 
     // Check for loss condition in a similar manner

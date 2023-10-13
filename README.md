@@ -2,7 +2,7 @@
 
 Welcome to Helpful Hangman – a fun-filled game that bridges entertainment with education. At the heart of every word lies a symphony of phonemes, the smallest units of sound that make a word distinct. With each guess in our game, players get to unravel these phonemes and understand how they join hands to form words. Thus as players proceed through the game, they enhance their phonemic awareness, a foundational step in literacy.
 
-The game is currently live at https://tahazakir.github.io/helpful-hangman/.
+The game is currently live at https://tahazakir.github.io/helpful-hangman/. It works best on Chrome, Edge, Safari or Firefox.
 
 # React + Vite
 
