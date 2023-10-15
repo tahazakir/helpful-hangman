@@ -7,7 +7,6 @@ import HangmanDrawing from "./HangmanDrawing";
 import { wordList } from "./words";
 
 function App() {
-  
   const speechSynthesisSupported = "speechSynthesis" in window;
 
   const getPreferredVoice = () => {
@@ -43,19 +42,48 @@ function App() {
     }
   }, [preferredVoice]);
 
-  const speak = (text) => {
+  // without silence
+
+  // const speak = (text) => {
+  //   if (!speechSynthesisSupported || !preferredVoice) {
+  //     return;
+  //   }
+
+  //   const utterance = new SpeechSynthesisUtterance(text);
+  //   utterance.lang = "en";
+  //   utterance.voice = preferredVoice;
+
+  //   // Stop any ongoing speech before starting
+  //   window.speechSynthesis.cancel();
+  //   window.speechSynthesis.speak(utterance);
+  // };
+
+  // With silence start
+
+  const speak = (textArray) => {
     if (!speechSynthesisSupported || !preferredVoice) {
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en";
-    utterance.voice = preferredVoice;
-
-    // Stop any ongoing speech before starting
     window.speechSynthesis.cancel();
-    window.speechSynthesis.speak(utterance);
+
+    textArray.forEach((text, index) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en";
+      utterance.voice = preferredVoice;
+
+      if (index > 0) {
+        utterance.onstart = () => {
+          window.speechSynthesis.pause();
+          setTimeout(() => window.speechSynthesis.resume(), 50);
+        };
+      }
+
+      window.speechSynthesis.speak(utterance);
+    });
   };
+
+  // With silence end
 
   const getRandomWord = (words) => {
     return words[Math.floor(Math.random() * words.length)];
@@ -108,16 +136,36 @@ function App() {
     });
   };
 
-  useEffect(() => {
-    // Generate the current word state
-    const currentWordState = wordObj.word
-      .split("")
-      .filter((letter) => guessedLetters.includes(letter))
-      .join("");
+  //without silence
 
-    // Read out the current word state using the speak function
-    speak(currentWordState);
+  // useEffect(() => {
+  //   // Generate the current word state
+  //   const currentWordState = wordObj.word
+  //     .split("")
+  //     .filter((letter) => guessedLetters.includes(letter))
+  //     .join("");
+
+  //   // Read out the current word state using the speak function
+  //   speak(currentWordState);
+  // }, [guessedLetters]);
+
+  // With silence start
+  useEffect(() => {
+    
+    const wordWithConsecutiveUnderscoresReplaced = wordObj.word
+      .split("")
+      .map((letter) => (guessedLetters.includes(letter) ? letter : "_"))
+      .join("")
+      .replace(/_+/g, "_");
+
+    const currentWordStateArray = wordWithConsecutiveUnderscoresReplaced
+      .split("_")
+      .filter((fragment) => fragment.length > 0);
+
+    speak(currentWordStateArray);
   }, [guessedLetters]);
+
+  // With silence end
 
   return (
     <div className="App">
